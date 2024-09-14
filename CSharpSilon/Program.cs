@@ -16,7 +16,7 @@ namespace CSharpSilon
         
         static async Task Main(string[] args)
         {
-            StartBot(); // I Use This For Testing <3
+            //StartBot(); // I Use This For Testing <3
             
             
             // Checks If The .exe Was Started With 1 Argument. Then Starts It With The Silent Argument.
