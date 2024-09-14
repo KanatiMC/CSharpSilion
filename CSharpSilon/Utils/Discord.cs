@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 
@@ -17,12 +19,25 @@ namespace CSharpSilon.Utils
             {
                 return voiceChannel.CategoryId == category.Id;
             }
-            else if (channel is SocketStageChannel stageChannel)
-            {
-                return stageChannel.CategoryId == category.Id;
-            }
 
             return false;
+        }
+        
+        public static async Task<bool> IsValid(string token)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://discord.com/api/v9/users/@me")
+                {
+                    Headers =
+                    {
+                        { "Authorization", $"Bot {token}" }
+                    }
+                };
+
+                var response = await httpClient.SendAsync(request);
+                return response.IsSuccessStatusCode;
+            }
         }
     }
 }

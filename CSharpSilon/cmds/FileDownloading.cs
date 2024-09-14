@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.Http;
 using Discord.Commands;
-using Discord.WebSocket;
 using System.Threading.Tasks;
 
 namespace CSharpSilon.cmds

@@ -1,11 +1,9 @@
 ﻿using System.Drawing;
 using System.IO;
 using Discord.Commands;
-using Discord.WebSocket;
 using System.Threading.Tasks;
 using Discord;
 using System.Windows.Forms;
-using Color = Discord.Color;
 using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
 namespace CSharpSilon.cmds

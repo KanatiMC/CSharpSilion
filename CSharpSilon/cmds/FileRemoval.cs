@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Discord.Commands;
-using Discord.WebSocket;
 using System.Threading.Tasks;
 
 namespace CSharpSilon.cmds

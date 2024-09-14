@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Discord.Commands;
-using Discord.WebSocket;
 using System.Threading.Tasks;
-using Discord;
 
 namespace CSharpSilon.cmds
 {

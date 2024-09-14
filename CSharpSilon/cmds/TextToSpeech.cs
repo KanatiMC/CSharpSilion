@@ -2,14 +2,13 @@
 using System.Speech.Synthesis;
 using System.Threading;
 using Discord.Commands;
-using Discord.WebSocket;
 using System.Threading.Tasks;
 
 namespace CSharpSilon.cmds
 {
     public class TextToSpeech : ModuleBase<SocketCommandContext>
     {
-        [Command("tts")]
+        [Command("tts"), Alias("say")]
         [Summary("Plays A Text-To-Speech Message On The User's Computer.")]
         public async Task TTS([Remainder]string text)
         {
