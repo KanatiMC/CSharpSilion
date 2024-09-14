@@ -1,5 +1,20 @@
 # <p align="center">CSharpSilon</p>
 ### A CSharp rewrite of [PySilon](https://github.com/mategol/PySilon-malware/tree/main)
+Some Features Include:
+
+```Rootkit Installation
+UAC Disabling
+Defender Disabling
+UAC Bypass
+Registry Modifying
+Process Killing
+Startup Enabling
+Screenshotting
+Webcam Pictures
+BSoD
+File Downloading
+And More...
+```
 
   
  # **<p align="center">Disaclaimer</p>**
