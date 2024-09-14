@@ -4,8 +4,7 @@
   
  # **Disclaimer**
  
- > Information and code provided on this repository are for educational purposes only. The creator is no way responsible for any direct or indirect damage caused due to the misusage of the information. Everything you do, you are doing at your own risk and responsibility.
-  
+ > The information and code provided within this repository are intended solely for educational purposes. This tool is designed as a proof of concept and is meant to be used exclusively on oneself. Utilizing it on others may be illegal. The creator assumes no responsibility for any direct or indirect damages resulting from the misuse of this information. Any actions taken are done at the user's own risk and responsibility.
   
 
 ## How To Use:  
